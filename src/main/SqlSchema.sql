@@ -6,7 +6,6 @@ DROP TABLE IF EXISTS `users`;
 
 CREATE TABLE `users` (
   `user_id` int NOT NULL AUTO_INCREMENT  ,
-  `room_id` int(10) DEFAULT NULL,
   `password` varchar(20) NOT NULL,
   `first_name` varchar(50) NOT NULL,
   `last_name` varchar(50) DEFAULT NULL,

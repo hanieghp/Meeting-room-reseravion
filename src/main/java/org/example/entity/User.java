@@ -4,7 +4,6 @@ public class User {
 
     private int userId;
 
-    private int roomId;
 
     private String password;
 
@@ -14,9 +13,8 @@ public class User {
 
     private String roll;
 
-    public User(int userId, int roomId, String password, String firstName, String lastName, String roll) {
+    public User(int userId, String password, String firstName, String lastName, String roll) {
         this.userId = userId;
-        this.roomId = roomId;
         this.password = password;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -29,14 +27,6 @@ public class User {
 
     public void setUserId(int userId) {
         this.userId = userId;
-    }
-
-    public int getRoomId() {
-        return roomId;
-    }
-
-    public void setRoomId(int roomId) {
-        this.roomId = roomId;
     }
 
     public String getPassword() {
