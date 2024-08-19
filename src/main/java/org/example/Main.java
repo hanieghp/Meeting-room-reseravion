@@ -34,17 +34,21 @@ public class Main {
                 System.out.print("Enter role: ");
                 String roll = scanner.nextLine();
 
-                Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/room_reserve", "root", "narges1382");
-                Statement statement = connection.createStatement();
+
                 String sql = String.format("INSERT INTO users (password, first_name, last_name, roll) VALUES ('%s', '%s', '%s', '%s')",
                         userPassword,
                         firstName,
                         lastName,
                         roll);
-                statement.execute(sql);
-                ResultSet resultSet = statement.executeQuery("SELECT LAST_INSERT_ID() AS user_id");
-                if (resultSet.next()) {
-                    int userId = resultSet.getInt("user_id");
+
+                SqlConnection sqlConnection = new SqlConnection();
+                // Return boolean result
+                sqlConnection.executeQuery(sql);
+                // Return Data as result
+                ResultSet resultSetAOP = sqlConnection.retrieveQueryResults("SELECT LAST_INSERT_ID() AS user_id");
+
+                if (resultSetAOP.next()) {
+                    int userId = resultSetAOP.getInt("user_id");
                     user = createUserObject(userId, userPassword, firstName, lastName, roll);
                     System.out.println(user.toString());
                     System.out.println("User registered successfully!");
@@ -89,6 +93,7 @@ public class Main {
 
         scanner.close();
     }
+
     private static UserInterface createUserObject(int userId, String password, String firstName, String lastName, String roll) {
         switch (roll) {
             case "ADMIN":
@@ -102,4 +107,5 @@ public class Main {
                 return new UserImpl(userId, password, firstName, lastName, roll);
         }
     }
-    }
+}
+

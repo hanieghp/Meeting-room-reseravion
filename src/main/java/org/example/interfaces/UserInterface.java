@@ -12,5 +12,8 @@ public interface UserInterface {
     // Req for Room
 
     // Show Req Status (Accepted, Declined , Waiting for Manager)
+
+    // User sign up
+
 }
 
