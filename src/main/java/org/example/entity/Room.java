@@ -9,6 +9,9 @@ public class Room {
     private Date Check_Out_Date;
     private boolean isEmpty;
 
+    public boolean isEmpty() {
+        return isEmpty;
+    }
     public void setRoomId(int roomId) {
         this.roomId = roomId;
     }
