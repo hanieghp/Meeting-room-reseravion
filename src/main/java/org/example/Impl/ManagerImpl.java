@@ -2,14 +2,14 @@ package org.example.Impl;
 
 import org.example.entity.Room;
 import org.example.entity.User;
-import org.example.interfaces.ManagerInterface;
-
+import org.example.interfaces.*;
 import java.util.List;
 
-public class ManagerImpl extends User implements ManagerInterface {
+public class ManagerImpl implements ManagerInterface, UserInterface {
+    private final UserInterface user;
 
-    public ManagerImpl(int userId, String password, String firstName, String lastName, String roll) {
-        super(userId, password, firstName, lastName, roll);
+    public ManagerImpl(UserInterface user) {
+        this.user = user;
     }
 
     @Override
@@ -25,5 +25,10 @@ public class ManagerImpl extends User implements ManagerInterface {
     @Override
     public boolean deleteRoom(int roomId) {
         return false;
+    }
+
+    @Override
+    public String getRoll() {
+        return user.getRoll();
     }
 }

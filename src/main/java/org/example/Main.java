@@ -4,6 +4,7 @@ import org.example.Impl.AdminImpl;
 import org.example.Impl.ManagerImpl;
 import org.example.Impl.UserImpl;
 import org.example.entity.User;
+import org.example.interfaces.UserInterface;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -13,7 +14,7 @@ import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
-        User user = null;
+        UserInterface user = null;
         Scanner scanner = new Scanner(System.in);
 
         System.out.println("Do you want to login or signup? (login/signup)");
@@ -42,10 +43,12 @@ public class Main {
                         roll);
                 statement.execute(sql);
                 ResultSet resultSet = statement.executeQuery("SELECT LAST_INSERT_ID() AS user_id");
-                int userId = resultSet.getInt("user_id");
-                user = createUserObject(userId, userPassword, firstName, lastName, roll);
-                System.out.println(user.toString());
-                System.out.println("User registered successfully!");
+                if (resultSet.next()) {
+                    int userId = resultSet.getInt("user_id");
+                    user = createUserObject(userId, userPassword, firstName, lastName, roll);
+                    System.out.println(user.toString());
+                    System.out.println("User registered successfully!");
+                }
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -86,12 +89,14 @@ public class Main {
 
         scanner.close();
     }
-    private static User createUserObject(int userId, String password, String firstName, String lastName, String roll) {
+    private static UserInterface createUserObject(int userId, String password, String firstName, String lastName, String roll) {
         switch (roll) {
             case "ADMIN":
-                return new AdminImpl(userId, password, firstName, lastName, roll);
+                //****** need change
+                //return new AdminImpl(userId, password, firstName, lastName, roll);
             case "MANAGER":
-                return new ManagerImpl(userId, password, firstName, lastName, roll);
+                UserInterface baseUser = new UserImpl(userId, password, firstName, lastName, roll);
+                return new ManagerImpl(baseUser);
             case "USER":
             default:
                 return new UserImpl(userId, password, firstName, lastName, roll);

@@ -5,6 +5,7 @@ import org.example.entity.Room;
 import java.util.List;
 
 public interface UserInterface {
+    String getRoll();
 
     // show Room List
 

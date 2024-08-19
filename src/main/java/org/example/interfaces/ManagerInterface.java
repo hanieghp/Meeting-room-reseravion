@@ -13,4 +13,5 @@ public interface ManagerInterface {
 
     // Method to delete a room from the database
     boolean deleteRoom(int roomId);
+
 }
