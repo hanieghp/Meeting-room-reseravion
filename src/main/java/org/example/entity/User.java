@@ -10,14 +10,14 @@ public class User {
 
     private String lastName;
 
-    private String roll;
+    private String role;
 
     public User(int userId, String password, String firstName, String lastName, String roll) {
         this.userId = userId;
         this.password = password;
         this.firstName = firstName;
         this.lastName = lastName;
-        this.roll = roll;
+        this.role = roll;
     }
 
     public int getUserId() {
@@ -52,11 +52,11 @@ public class User {
         this.lastName = lastName;
     }
 
-    public String getRoll() {
-        return roll;
+    public String getRole() {
+        return role;
     }
 
-    public void setRoll(String roll) {
-        this.roll = roll;
+    public void setRole(String role) {
+        this.role = role;
     }
 }

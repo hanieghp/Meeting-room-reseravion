@@ -9,7 +9,7 @@ CREATE TABLE `users` (
   `password` varchar(20) NOT NULL,
   `first_name` varchar(50) NOT NULL,
   `last_name` varchar(50) DEFAULT NULL,
-  `roll` varchar(10) DEFAULT 'USER',
+  `role` varchar(10) DEFAULT 'USER',
   PRIMARY KEY(`user_Id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
 
