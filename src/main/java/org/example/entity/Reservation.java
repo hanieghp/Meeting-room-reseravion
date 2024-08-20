@@ -3,18 +3,17 @@ package org.example.entity;
 import java.util.Date;
 
 public class Reservation {
+    // reservationId is Auto increment
     private int reservationId;
     private int userId;
     private int roomId;
-    private Date reservationDate;
+
+    private Date checkInDate;
+    private Date checkOutDate;
     private String status;
 
     public int getReservationId() {
         return reservationId;
-    }
-
-    public void setReservationId(int reservationId) {
-        this.reservationId = reservationId;
     }
 
     public int getUserId() {
@@ -33,12 +32,20 @@ public class Reservation {
         this.roomId = roomId;
     }
 
-    public Date getReservationDate() {
-        return reservationDate;
+    public Date getCheckInDate() {
+        return checkInDate;
     }
 
-    public void setReservationDate(Date reservationDate) {
-        this.reservationDate = reservationDate;
+    public void setCheckInDate(Date checkInDate) {
+        this.checkInDate = checkInDate;
+    }
+
+    public Date getCheckOutDate() {
+        return checkOutDate;
+    }
+
+    public void setCheckOutDate(Date checkOutDate) {
+        this.checkOutDate = checkOutDate;
     }
 
     public String getStatus() {
@@ -49,11 +56,11 @@ public class Reservation {
         this.status = status;
     }
 
-    public Reservation(int reservationId, int userId, int roomId, Date reservationDate, String status) {
-        this.reservationId = reservationId;
+    public Reservation(int userId, int roomId, Date checkInDate, Date checkOutDate, String status) {
         this.userId = userId;
         this.roomId = roomId;
-        this.reservationDate = reservationDate;
+        this.checkInDate = checkInDate;
+        this.checkOutDate = checkOutDate;
         this.status = status;
     }
 }

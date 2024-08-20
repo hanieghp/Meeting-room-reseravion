@@ -2,21 +2,19 @@ package org.example.entity;
 
 public class User {
 
+
+    // Delete setter cus id is auto increment
     private int userId;
 
     private String password;
 
-    private String firstName;
-
-    private String lastName;
+    private String fullName;
 
     private String role;
 
-    public User(int userId, String password, String firstName, String lastName, String roll) {
-        this.userId = userId;
+    public User( String password, String firstName, String lastName, String roll) {
         this.password = password;
-        this.firstName = firstName;
-        this.lastName = lastName;
+        this.fullName = firstName;
         this.role = roll;
     }
 
@@ -24,9 +22,6 @@ public class User {
         return userId;
     }
 
-    public void setUserId(int userId) {
-        this.userId = userId;
-    }
 
     public String getPassword() {
         return password;
@@ -36,20 +31,12 @@ public class User {
         this.password = password;
     }
 
-    public String getFirstName() {
-        return firstName;
+    public String getFullName() {
+        return fullName;
     }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
     }
 
     public String getRole() {

@@ -49,8 +49,8 @@ public class Main {
 
                 if (resultSetAOP.next()) {
                     int userId = resultSetAOP.getInt("user_id");
-                    user = createUserObject(userId, userPassword, firstName, lastName, roll);
-                    System.out.println(user.toString());
+//                    user = createUserObject(userId, userPassword, firstName, lastName, roll);
+//                    System.out.println(user.toString());
                     System.out.println("User registered successfully!");
                 }
             } catch (Exception e) {
@@ -79,8 +79,8 @@ public class Main {
                     String userFirstName = resultSet.getString("first_name");
                     String userLastName = resultSet.getString("last_name");
                     String userRoll = resultSet.getString("roll");
-                    user = createUserObject(userId, userPassword, userFirstName, userLastName, userRoll);
-                    System.out.println(user.getRoll());
+//                    user = createUserObject(userId, userPassword, userFirstName, userLastName, userRoll);
+//                    System.out.println(user.getRoll());
                 } else {
                     System.out.println("invalid");
                 }
@@ -94,18 +94,20 @@ public class Main {
         scanner.close();
     }
 
-    private static UserInterface createUserObject(int userId, String password, String firstName, String lastName, String roll) {
-        switch (roll) {
-            case "ADMIN":
-                //****** need change
-                //return new AdminImpl(userId, password, firstName, lastName, roll);
-            case "MANAGER":
-                UserInterface baseUser = new UserImpl(userId, password, firstName, lastName, roll);
-                return new ManagerImpl(baseUser);
-            case "USER":
-            default:
-                return new UserImpl(userId, password, firstName, lastName, roll);
-        }
-    }
+
+    // need change
+//    private static UserInterface createUserObject(int userId, String password, String firstName, String lastName, String roll) {
+//        switch (roll) {
+//            case "ADMIN":
+//                //****** need change
+//                //return new AdminImpl(userId, password, firstName, lastName, roll);
+//            case "MANAGER":
+//                UserInterface baseUser = new UserImpl(password, firstName, lastName, roll);
+//                return new ManagerImpl(baseUser);
+//            case "USER":
+//            default:
+//                return new UserImpl( password, firstName, lastName, roll);
+//        }
+//    }
 }
 
