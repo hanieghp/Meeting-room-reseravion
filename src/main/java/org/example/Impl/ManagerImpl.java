@@ -8,17 +8,51 @@ import org.example.interfaces.*;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 public class ManagerImpl implements ManagerInterface {
 
     private final SqlConnection sqlConnection;
-//    private final UserInterface user;
 
     public ManagerImpl() {
         this.sqlConnection = new SqlConnection();
-        //this.user = user;
     }
 
+    public void execute(){
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Manager access is: ");
+        while (true){
+            System.out.println("1. view all rooms");
+            System.out.println("2. add a room");
+            System.out.println("3. delete a room");
+            System.out.println("4. Exit");
+            System.out.println("Choose an option: ");
+
+            int choice = scanner.nextInt();
+            scanner.nextLine();
+
+            switch (choice){
+                case 1:
+                    getAllRooms();
+                    break;
+                case 2:
+                    System.out.println("Enter the capacity of room: ");
+                    int capacity = scanner.nextInt();
+                    addRoom(String.valueOf(capacity));
+                    break;
+                case 3:
+                    System.out.println("Enter the roomId you want to delete: ");
+                    int delId = scanner.nextInt();
+                    deleteRoom(delId);
+                case 4:
+                    System.out.println("Exiting the system...");
+                    scanner.close();
+                    return;
+                default:
+                    System.out.println("Invalid option. Please try again.");
+            }
+        }
+    }
     @Override
     public List<Room> getAllRooms() {
         String query = "SELECT * FROM rooms";
@@ -57,9 +91,30 @@ public class ManagerImpl implements ManagerInterface {
 
     @Override
     public boolean deleteRoom(int roomId) {
-        // check if the room is empty or not
-        return true;
+        // 1. بررسی خالی بودن اتاق
+        String checkQuery = String.format("SELECT isEmpty FROM rooms WHERE room_id = %d", roomId);
+        ResultSet rs = sqlConnection.retrieveQueryResults(checkQuery);
+
+        try {
+            if (rs.next()) {
+                int isEmpty = rs.getInt("isEmpty");
+                if (isEmpty == 1) {
+                    String deleteQuery = String.format("DELETE FROM rooms WHERE room_id = %d", roomId);
+                    sqlConnection.executeQuery(deleteQuery);
+
+                    System.out.println("Room deleted successfully.");
+                } else {
+                    System.out.println("Room is not empty, cannot delete.");
+                    return false;
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return false;
     }
+
 
 
 
