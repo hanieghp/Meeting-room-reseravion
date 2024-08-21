@@ -6,10 +6,8 @@ import org.example.Impl.UserImpl;
 import org.example.entity.User;
 import org.example.interfaces.UserInterface;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.Statement;
+import java.sql.*;
+import java.util.Properties;
 import java.util.Scanner;
 
 public class Main {
@@ -67,7 +65,10 @@ public class Main {
                 System.out.print("Enter password: ");
                 String password = scanner.nextLine();
 
-                Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/room_reserve", "root", "narges1382");
+                Class.forName("com.mysql.cj.jdbc.Driver");
+
+                Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/room_reserve", "root", "123456");
+                System.out.println("connect to database");
                 Statement statement = connection.createStatement();
                 String sql = String.format("SELECT * FROM users WHERE first_name = '%s' AND last_name = '%s' AND password = '%s'",
                         firstName, lastName, password);
@@ -90,7 +91,22 @@ public class Main {
         } else {
             System.out.println("Invalid choice. Please select either 'login' or 'signup'.");
         }
-
+//        ManagerImpl mn = new ManagerImpl();
+//        String cmd = scanner.nextLine();
+//        while (cmd != "0") {
+//            if (cmd.equals("add")){
+//                int capacity = scanner.nextInt();
+//                mn.addRoom(String.valueOf(capacity));
+//            }
+//            else if (cmd.equals("show")){
+//                mn.getAllRooms();
+//            }
+//            else if (cmd.equals("delete")){
+//                int rm = scanner.nextInt();
+//                mn.deleteRoom(rm);
+//            }
+//            cmd = scanner.nextLine();
+//        }
         scanner.close();
     }
 
