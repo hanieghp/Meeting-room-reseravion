@@ -6,8 +6,9 @@ public class Room {
     private int room_capacity;
 
     // Constructor
-    public Room(int room_capacity) {
+    public Room(int room_capacity, int roomId) {
         this.room_capacity = room_capacity;
+        this.roomId = roomId;
     }
 
     // setter and getter
