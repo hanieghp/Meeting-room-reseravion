@@ -9,8 +9,12 @@ public class Room {
 
 
     // Constructor
+    public Room(int room_capacity, int roomId) {
+        this.room_capacity = room_capacity;
+        this.roomId = roomId;
+    }
+
     public Room() {
-        //
     }
 
     // setter and getter

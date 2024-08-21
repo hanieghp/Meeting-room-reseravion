@@ -13,8 +13,12 @@ import java.util.Scanner;
 public class ManagerImpl implements ManagerInterface {
 
     private final SqlConnection sqlConnection;
+    private int userId;
+    private String fullName;
 
-    public ManagerImpl() {
+    public ManagerImpl(int userId, String fullName) {
+        this.userId = userId;
+        this.fullName = fullName;
         this.sqlConnection = new SqlConnection();
     }
 
