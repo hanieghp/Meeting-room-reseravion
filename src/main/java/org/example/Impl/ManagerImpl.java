@@ -91,7 +91,6 @@ public class ManagerImpl implements ManagerInterface {
 
     @Override
     public boolean deleteRoom(int roomId) {
-        // 1. بررسی خالی بودن اتاق
         String checkQuery = String.format("SELECT isEmpty FROM rooms WHERE room_id = %d", roomId);
         ResultSet rs = sqlConnection.retrieveQueryResults(checkQuery);
 
