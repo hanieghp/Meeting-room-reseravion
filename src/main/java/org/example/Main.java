@@ -24,23 +24,6 @@ public class Main {
         if (choice.equalsIgnoreCase("signup")) {
             System.out.print("Enter full name: ");
             String fullName = scanner.nextLine();
-//            int count = 0;
-//            while (true){
-//                try{
-//                    fullName = scanner.nextLine();
-//                    String sql = String.format("SELECT user_id FROM users WHERE full_name = '%s'", fullName);
-//                    SqlConnection sqlConnection = new SqlConnection();
-//                    sqlConnection.executeQuery(sql);
-//                    ResultSet resultSetAOP = sqlConnection.retrieveQueryResults(sql);
-//                    System.out.println(resultSetAOP.getArray(1));
-//                    if(count == 0)
-//                        break;
-//                    System.out.println("User with this full name already exists. Please try with a different name.");
-//                }catch (Exception e){
-//                    e.printStackTrace();
-//                }
-//
-//            }
 
             System.out.print("Enter password: ");
             String userPassword = scanner.nextLine();
@@ -58,9 +41,8 @@ public class Main {
                 System.out.print("Enter password: ");
                 String password = scanner.nextLine();
 
-                ;
-                UserImpl u = new UserImpl();
-                u.execute(auth.login(fullName, password));
+                auth.login(fullName, password);
+              
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -71,4 +53,3 @@ public class Main {
         scanner.close();
     }
 }
-

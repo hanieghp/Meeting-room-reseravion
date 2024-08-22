@@ -12,8 +12,14 @@ import java.util.List;
 import java.util.Scanner;
 
 public class UserImpl implements UserInterface{
+    private int userId;
+    private String fullName;
+    public UserImpl(int userId, String fullName) {
+        this.userId = userId;
+        this.fullName = fullName;
+    }
 
-    public void execute(int userId){
+    public void execute(){
         Scanner scanner = new Scanner(System.in);
         while (true) {
 
@@ -22,6 +28,9 @@ public class UserImpl implements UserInterface{
             System.out.println("3. Check Reservation Status");
             System.out.println("4. Exit");
             System.out.print("Choose an option: ");
+
+            int choice = scanner.nextInt();
+            scanner.nextLine();
 
             int choice = scanner.nextInt();
             scanner.nextLine();
@@ -38,7 +47,7 @@ public class UserImpl implements UserInterface{
                         }
                     }
                     break;
-                case 2:
+              case 2:
                     System.out.print("Enter the room ID you want to reserve: ");
                     int roomId = scanner.nextInt();
                     scanner.nextLine(); // Consume newline
@@ -71,19 +80,19 @@ public class UserImpl implements UserInterface{
         List<Room> availableRooms = new ArrayList<>();
         String query = "SELECT room_id, room_capacity FROM rooms WHERE room_id NOT IN " +
                 "(SELECT room_id FROM reservation WHERE status = 'PENDING' OR status = 'ACCEPTED')";
-    try {
-        SqlConnection connection = new SqlConnection();
-        ResultSet rs = connection.retrieveQueryResults(query);
-        while (rs.next()) {
-            int roomId = rs.getInt("room_id");
-            int roomCapacity = rs.getInt("room_capacity");
-            availableRooms.add(new Room(roomCapacity, roomId));
+        try {
+            SqlConnection connection = new SqlConnection();
+            ResultSet rs = connection.retrieveQueryResults(query);
+            while (rs.next()) {
+                int roomId = rs.getInt("room_id");
+                int roomCapacity = rs.getInt("room_capacity");
+                availableRooms.add(new Room(roomCapacity, roomId));
+            }
+        }catch (Exception e) {
+            e.printStackTrace();
         }
-    }catch (Exception e) {
-        e.printStackTrace();
-    }
         System.out.println(availableRooms.size());
-    return availableRooms;
+        return availableRooms;
     }
 
     @Override

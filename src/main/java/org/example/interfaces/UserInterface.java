@@ -14,4 +14,3 @@ public interface UserInterface {
     // User sign up
 
 }
-
