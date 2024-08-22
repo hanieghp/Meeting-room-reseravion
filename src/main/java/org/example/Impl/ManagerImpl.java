@@ -22,14 +22,15 @@ public class ManagerImpl implements ManagerInterface, UserInterface {
     @Override
     public boolean addRoom(Room room) {
 
-        SqlConnection sqlConnection = new SqlConnection();
-        String sqlQuery = String.format("INSERT INTO rooms(room_capacity, Check_In_Date, Check_Out_Date, isEmpty) VALUES ('%s', '%s', '%s', '%s')",
-                room.getRoom_capacity(),
-                java.sql.Date.valueOf(String.valueOf(room.getCheck_In_Date())),
-                java.sql.Date.valueOf(String.valueOf(room.getCheck_Out_Date())),
-                room.isEmpty()
-        );
-        return sqlConnection.executeQuery(sqlQuery);
+//        SqlConnection sqlConnection = new SqlConnection();
+//        String sqlQuery = String.format("INSERT INTO rooms(room_capacity, Check_In_Date, Check_Out_Date, isEmpty) VALUES ('%s', '%s', '%s', '%s')",
+//                room.getRoom_capacity(),
+//                java.sql.Date.valueOf(String.valueOf(room.getCheck_In_Date())),
+//                java.sql.Date.valueOf(String.valueOf(room.getCheck_Out_Date())),
+//                room.isEmpty()
+//        );
+//        return sqlConnection.executeQuery(sqlQuery);
+        return false;
     }
 
     @Override

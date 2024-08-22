@@ -1,14 +1,13 @@
 package org.example;
 
+
 import java.sql.*;
-import java.util.List;
-import java.util.Objects;
 
 public class SqlConnection {
 
     private static final String URL = "jdbc:mysql://localhost:3306/room_reserve";
     private static final String USER = "root";
-    private static final String PASSWORD = "narges1382";
+    private static final String PASSWORD = "root";
 
 
     // For boolean retrieval
