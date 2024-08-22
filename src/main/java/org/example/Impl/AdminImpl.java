@@ -37,7 +37,10 @@ public class AdminImpl implements AdminInterface {
 
     @Override
     public String acceptRoomReserve(int reserveId) {
-//        String query = "UPDATE reservation SET status = "
+        String query = "UPDATE reservation SET status = 'ACCEPT' WHERE reservation_id = %s";
+        String newStatus = "ACCEPT";
+        String acceptReserve = String.format("UPDATE reservation SET status = '" + newStatus + "' "
+                + "WHERE reservation_id = " + reserveId + ";");
         return null;
     }
 
