@@ -8,8 +8,11 @@ import java.util.Objects;
 import java.sql.Connection; import java.sql.DriverManager; import java.sql.SQLException; import java.util.Properties;
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> Admin
+=======
+>>>>>>> 9b58d2978f7f1c705380cfa5fc4db90bf2937a5b
 =======
 >>>>>>> 9b58d2978f7f1c705380cfa5fc4db90bf2937a5b
 
@@ -19,10 +22,14 @@ public class SqlConnection {
     private static final String USER = "root";
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     private static final String PASSWORD = "123456";
 =======
     private static final String PASSWORD = "root";
 >>>>>>> Admin
+=======
+    private static final String PASSWORD = "123456";
+>>>>>>> 9b58d2978f7f1c705380cfa5fc4db90bf2937a5b
 =======
     private static final String PASSWORD = "123456";
 >>>>>>> 9b58d2978f7f1c705380cfa5fc4db90bf2937a5b

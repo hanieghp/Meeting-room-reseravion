@@ -88,12 +88,16 @@ public class ManagerImpl implements ManagerInterface {
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 9b58d2978f7f1c705380cfa5fc4db90bf2937a5b
 =======
 >>>>>>> 9b58d2978f7f1c705380cfa5fc4db90bf2937a5b
         System.out.println("Executing query: " + query);
         boolean isSuccess = sqlConnection.executeQuery(query);
 
         return !isSuccess;
+<<<<<<< HEAD
 <<<<<<< HEAD
 =======
 //        SqlConnection sqlConnection = new SqlConnection();
@@ -106,6 +110,8 @@ public class ManagerImpl implements ManagerInterface {
 //        return sqlConnection.executeQuery(sqlQuery);
         return false;
 >>>>>>> Admin
+=======
+>>>>>>> 9b58d2978f7f1c705380cfa5fc4db90bf2937a5b
 =======
 >>>>>>> 9b58d2978f7f1c705380cfa5fc4db90bf2937a5b
     }

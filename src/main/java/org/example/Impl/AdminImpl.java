@@ -9,7 +9,6 @@ import java.util.Date;
 
 public class AdminImpl implements AdminInterface {
 
-
     // this List should have Reservation id, Room id , User id , Check in date , Check out date and status
     @Override
     public void showRoomReservations() throws SQLException {
