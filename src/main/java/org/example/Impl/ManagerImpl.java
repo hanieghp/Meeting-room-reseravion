@@ -117,8 +117,4 @@ public class ManagerImpl implements ManagerInterface {
 
         return false;
     }
-
-
-
-
 }

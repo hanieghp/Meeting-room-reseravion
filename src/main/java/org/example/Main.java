@@ -17,6 +17,7 @@ public class Main {
         Scanner scanner = new Scanner(System.in);
         Auth auth = new Auth();
 
+
         System.out.println("Do you want to login or signup? (login/signup)");
         String choice = scanner.nextLine();
 
@@ -41,6 +42,7 @@ public class Main {
                 String password = scanner.nextLine();
 
                 auth.login(fullName, password);
+              
             } catch (Exception e) {
                 e.printStackTrace();
             }

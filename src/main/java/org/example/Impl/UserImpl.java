@@ -32,6 +32,9 @@ public class UserImpl implements UserInterface{
             int choice = scanner.nextInt();
             scanner.nextLine();
 
+            int choice = scanner.nextInt();
+            scanner.nextLine();
+
             switch (choice) {
                 case 1:
                     List<Room> availableRooms = viewAvailableRooms();
@@ -44,7 +47,7 @@ public class UserImpl implements UserInterface{
                         }
                     }
                     break;
-                case 2:
+              case 2:
                     System.out.print("Enter the room ID you want to reserve: ");
                     int roomId = scanner.nextInt();
                     scanner.nextLine(); // Consume newline
