@@ -7,18 +7,25 @@ import java.util.List;
 import java.util.Objects;
 import java.sql.Connection; import java.sql.DriverManager; import java.sql.SQLException; import java.util.Properties;
 
+<<<<<<< HEAD
 =======
 >>>>>>> Admin
+=======
+>>>>>>> 9b58d2978f7f1c705380cfa5fc4db90bf2937a5b
 
 public class SqlConnection {
 
     private static final String URL = "jdbc:mysql://localhost:3306/room_reserve";
     private static final String USER = "root";
 <<<<<<< HEAD
+<<<<<<< HEAD
     private static final String PASSWORD = "123456";
 =======
     private static final String PASSWORD = "root";
 >>>>>>> Admin
+=======
+    private static final String PASSWORD = "123456";
+>>>>>>> 9b58d2978f7f1c705380cfa5fc4db90bf2937a5b
 
 
     // For boolean retrieval

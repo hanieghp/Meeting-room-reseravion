@@ -87,10 +87,14 @@ public class ManagerImpl implements ManagerInterface {
         String query = String.format("INSERT INTO rooms (room_capacity) VALUES ('%s')", roomCapacity);
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 9b58d2978f7f1c705380cfa5fc4db90bf2937a5b
         System.out.println("Executing query: " + query);
         boolean isSuccess = sqlConnection.executeQuery(query);
 
         return !isSuccess;
+<<<<<<< HEAD
 =======
 //        SqlConnection sqlConnection = new SqlConnection();
 //        String sqlQuery = String.format("INSERT INTO rooms(room_capacity, Check_In_Date, Check_Out_Date, isEmpty) VALUES ('%s', '%s', '%s', '%s')",
@@ -102,6 +106,8 @@ public class ManagerImpl implements ManagerInterface {
 //        return sqlConnection.executeQuery(sqlQuery);
         return false;
 >>>>>>> Admin
+=======
+>>>>>>> 9b58d2978f7f1c705380cfa5fc4db90bf2937a5b
     }
 
 

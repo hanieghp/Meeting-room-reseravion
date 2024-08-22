@@ -1,8 +1,8 @@
 package org.example.Impl;
 
 import org.example.SqlConnection;
-import org.example.entity.Reservation;
 import org.example.interfaces.AdminInterface;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Date;
@@ -15,7 +15,7 @@ public class AdminImpl implements AdminInterface {
     public void showRoomReservations() throws SQLException {
         String query = "SELECT * FROM reservation";
         SqlConnection sqlConnection = new SqlConnection();
-        ResultSet results = sqlConnection.retrieveQueryResults(query);
+        ResultSet results = SqlConnection.retrieveQueryResults(query);
 
         while (results.next()) {
             int reservId = results.getInt("reservation_id");
@@ -36,13 +36,10 @@ public class AdminImpl implements AdminInterface {
 
     @Override
     public String acceptRoomReserve(int reserveId) {
-        // String.format("INSERT INTO rooms (room_capacity) VALUES ('%s')", roomCapacity)
-//        String query = "UPDATE reservation SET status = 'ACCEPT' WHERE reservation_id = %s";
         String newStatus = "ACCEPTED";
         String acceptReserve = String.format("UPDATE reservation SET status = '" + newStatus + "' "
                 + "WHERE reservation_id = " + reserveId + ";");
         String result;
-
         SqlConnection conn = new SqlConnection();
 
         if (conn.executeQuery(acceptReserve)) {
@@ -50,7 +47,6 @@ public class AdminImpl implements AdminInterface {
         } else {
             result = "Your Request Rejected";
         }
-
         return result;
     }
 
