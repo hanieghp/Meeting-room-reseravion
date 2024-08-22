@@ -37,15 +37,39 @@ public class AdminImpl implements AdminInterface {
 
     @Override
     public String acceptRoomReserve(int reserveId) {
-        String query = "UPDATE reservation SET status = 'ACCEPT' WHERE reservation_id = %s";
-        String newStatus = "ACCEPT";
+        // String.format("INSERT INTO rooms (room_capacity) VALUES ('%s')", roomCapacity)
+//        String query = "UPDATE reservation SET status = 'ACCEPT' WHERE reservation_id = %s";
+        String newStatus = "ACCEPTED";
         String acceptReserve = String.format("UPDATE reservation SET status = '" + newStatus + "' "
                 + "WHERE reservation_id = " + reserveId + ";");
-        return null;
+        String result;
+
+        SqlConnection conn = new SqlConnection();
+
+        if (conn.executeQuery(acceptReserve)) {
+            result = "Reservation successfully Accepted! ";
+        } else {
+            result = "Your Request Rejected";
+        }
+
+        return result;
     }
 
     @Override
-    public String declienRoomReserve() {
-        return null;
+    public String declienRoomReserve(int reserveId) {
+        String newStatus = "DECLINED";
+        String acceptReserve = String.format("UPDATE reservation SET status = '" + newStatus + "' "
+                + "WHERE reservation_id = " + reserveId + ";");
+        String result;
+
+        SqlConnection conn = new SqlConnection();
+
+        if (conn.executeQuery(acceptReserve)) {
+            result = "Reservation successfully Declined! ";
+        } else {
+            result = "Your Request Rejected";
+        }
+
+        return result;
     }
 }

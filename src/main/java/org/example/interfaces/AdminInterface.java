@@ -15,5 +15,5 @@ public interface AdminInterface {
 
     // define a method to Decline Reservation
 
-    String declienRoomReserve();
+    String declienRoomReserve(int reserveId);
 }
