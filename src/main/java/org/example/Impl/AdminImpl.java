@@ -3,13 +3,12 @@ package org.example.Impl;
 import org.example.SqlConnection;
 import org.example.entity.Reservation;
 import org.example.interfaces.AdminInterface;
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Date;
-import java.util.List;
 
 public class AdminImpl implements AdminInterface {
+
 
     // this List should have Reservation id, Room id , User id , Check in date , Check out date and status
     @Override
