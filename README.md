@@ -53,4 +53,4 @@ After successful compilation, run the application using:
    * Login: Enter login to access the system with your credentials. The system will direct you based on your role.
 
 ## Resources and References
-All related study materials, documentation, and resources are available in the [shared folder]() on the public space (Padaspace).
+All related study materials, documentation, and resources are available in the [shared folder](https://podspace.ir/public/folders/QX5JZ5UDDK636KM1) on the public space (Padaspace).
