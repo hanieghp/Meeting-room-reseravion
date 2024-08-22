@@ -8,10 +8,10 @@ import java.util.List;
 public interface AdminInterface {
 
     // define a method to show all Room Request
-    List<Reservation> showRoomReservations() throws SQLException;
+    void showRoomReservations() throws SQLException;
 
     // define a method to Accept Req for Room
-    String acceptRoomReserve();
+    String acceptRoomReserve(int reserveId);
 
     // define a method to Decline Reservation
 

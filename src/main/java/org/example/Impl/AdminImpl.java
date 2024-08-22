@@ -13,7 +13,7 @@ public class AdminImpl implements AdminInterface {
 
     // this List should have Reservation id, Room id , User id , Check in date , Check out date and status
     @Override
-    public List<Reservation> showRoomReservations() throws SQLException {
+    public void showRoomReservations() throws SQLException {
         String query = "SELECT * FROM reservation";
         SqlConnection sqlConnection = new SqlConnection();
         ResultSet results = sqlConnection.retrieveQueryResults(query);
@@ -25,13 +25,19 @@ public class AdminImpl implements AdminInterface {
             Date checkIn = results.getDate("check_in_date");
             Date checkOut = results.getDate("check_in_out");
             String status = results.getString("status");
-        }
 
-        return null;
+            System.out.println("Reservation id: " + reservId
+                    + ", Room id: " + roomId
+                    + ", User id: " + userId
+                    + ", Check-in Date: " + checkIn
+                    + ", Check-out Date: " + checkOut
+                    + ", Status: " + status);
+        }
     }
 
     @Override
-    public String acceptRoomReserve() {
+    public String acceptRoomReserve(int reserveId) {
+//        String query = "UPDATE reservation SET status = "
         return null;
     }
 
