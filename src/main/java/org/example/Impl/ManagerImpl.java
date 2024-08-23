@@ -22,10 +22,10 @@ public class ManagerImpl implements ManagerInterface {
         this.sqlConnection = new SqlConnection();
     }
 
-    public void execute(){
+    public void execute() {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Manager access is: ");
-        while (true){
+        while (true) {
             System.out.println("1. view all rooms");
             System.out.println("2. add a room");
             System.out.println("3. delete a room");
@@ -35,7 +35,7 @@ public class ManagerImpl implements ManagerInterface {
             int choice = scanner.nextInt();
             scanner.nextLine();
 
-            switch (choice){
+            switch (choice) {
                 case 1:
                     getAllRooms();
                     break;
@@ -57,6 +57,7 @@ public class ManagerImpl implements ManagerInterface {
             }
         }
     }
+
     @Override
     public List<Room> getAllRooms() {
         String query = "SELECT * FROM rooms";
@@ -86,34 +87,9 @@ public class ManagerImpl implements ManagerInterface {
     public boolean addRoom(String roomCapacity) {
         String query = String.format("INSERT INTO rooms (room_capacity) VALUES ('%s')", roomCapacity);
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> 9b58d2978f7f1c705380cfa5fc4db90bf2937a5b
-=======
->>>>>>> 9b58d2978f7f1c705380cfa5fc4db90bf2937a5b
         System.out.println("Executing query: " + query);
         boolean isSuccess = sqlConnection.executeQuery(query);
-
         return !isSuccess;
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-//        SqlConnection sqlConnection = new SqlConnection();
-//        String sqlQuery = String.format("INSERT INTO rooms(room_capacity, Check_In_Date, Check_Out_Date, isEmpty) VALUES ('%s', '%s', '%s', '%s')",
-//                room.getRoom_capacity(),
-//                java.sql.Date.valueOf(String.valueOf(room.getCheck_In_Date())),
-//                java.sql.Date.valueOf(String.valueOf(room.getCheck_Out_Date())),
-//                room.isEmpty()
-//        );
-//        return sqlConnection.executeQuery(sqlQuery);
-        return false;
->>>>>>> Admin
-=======
->>>>>>> 9b58d2978f7f1c705380cfa5fc4db90bf2937a5b
-=======
->>>>>>> 9b58d2978f7f1c705380cfa5fc4db90bf2937a5b
     }
 
 
