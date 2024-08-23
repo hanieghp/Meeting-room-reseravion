@@ -32,8 +32,8 @@ public class UserImpl implements UserInterface{
             int choice = scanner.nextInt();
             scanner.nextLine();
 
-            int choice = scanner.nextInt();
-            scanner.nextLine();
+//            int choice = scanner.nextInt();
+//            scanner.nextLine();
 
             switch (choice) {
                 case 1:
