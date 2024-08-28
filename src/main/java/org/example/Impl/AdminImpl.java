@@ -1,69 +1,79 @@
 package org.example.Impl;
 
-import org.example.SqlConnection;
+import org.example.entity.Reservation;
 import org.example.interfaces.AdminInterface;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.io.*;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class AdminImpl implements AdminInterface {
 
-    // this List should have Reservation id, Room id , User id , Check in date , Check out date and status
+    private static final String RESERVATIONS_FILE_PATH = "reservations.csv";
+    private List<Reservation> reservations = new ArrayList<>();
+
+    public AdminImpl() {
+        loadReservations();
+    }
+
     @Override
-    public void showRoomReservations() throws SQLException {
-        String query = "SELECT * FROM reservation";
-        SqlConnection sqlConnection = new SqlConnection();
-        ResultSet results = SqlConnection.retrieveQueryResults(query);
-
-        while (results.next()) {
-            int reservId = results.getInt("reservation_id");
-            int userId = results.getInt("user_id");
-            int roomId = results.getInt("room_id");
-            Date checkIn = results.getDate("check_in_date");
-            Date checkOut = results.getDate("check_in_out");
-            String status = results.getString("status");
-
-            System.out.println("Reservation id: " + reservId
-                    + ", Room id: " + roomId
-                    + ", User id: " + userId
-                    + ", Check-in Date: " + checkIn
-                    + ", Check-out Date: " + checkOut
-                    + ", Status: " + status);
+    public void showRoomReservations() {
+        for (Reservation reservation : reservations) {
+            System.out.println("Reservation id: " + reservation.getReservationId()
+                    + ", Room id: " + reservation.getRoomId()
+                    + ", User id: " + reservation.getUserId()
+                    + ", Check-in Date: " + reservation.getCheckInDate()
+                    + ", Check-out Date: " + reservation.getCheckOutDate()
+                    + ", Status: " + reservation.getStatus());
         }
     }
 
     @Override
     public String acceptRoomReserve(int reserveId) {
-        String newStatus = "ACCEPTED";
-        String acceptReserve = String.format("UPDATE reservation SET status = '" + newStatus + "' "
-                + "WHERE reservation_id = " + reserveId + ";");
-        String result;
-        SqlConnection conn = new SqlConnection();
-
-        if (conn.executeQuery(acceptReserve)) {
-            result = "Reservation successfully Accepted! ";
-        } else {
-            result = "Your Request Rejected";
-        }
-        return result;
+        return updateReservationStatus(reserveId, "ACCEPTED");
     }
 
     @Override
     public String declienRoomReserve(int reserveId) {
-        String newStatus = "DECLINED";
-        String acceptReserve = String.format("UPDATE reservation SET status = '" + newStatus + "' "
-                + "WHERE reservation_id = " + reserveId + ";");
-        String result;
+        return updateReservationStatus(reserveId, "DECLINED");
+    }
 
-        SqlConnection conn = new SqlConnection();
-
-        if (conn.executeQuery(acceptReserve)) {
-            result = "Reservation successfully Declined! ";
-        } else {
-            result = "Your Request Rejected";
+    private String updateReservationStatus(int reserveId, String newStatus) {
+        for (Reservation reservation : reservations) {
+            if (reservation.getReservationId() == reserveId) {
+                reservation.setStatus(newStatus);
+                saveReservations(); // Save updated reservations to file
+                return "Reservation successfully " + (newStatus.equals("ACCEPTED") ? "Accepted!" : "Declined!");
+            }
         }
+        return "Reservation not found.";
+    }
 
-        return result;
+    private void saveReservations() {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(RESERVATIONS_FILE_PATH))) {
+            for (Reservation reservation : reservations) {
+                writer.write(reservation.toCSV());
+                writer.newLine();
+            }
+        } catch (IOException e) {
+            System.err.println("Error saving reservations: " + e.getMessage());
+        }
+    }
+
+    private void loadReservations() {
+        File file = new File(RESERVATIONS_FILE_PATH);
+        if (file.exists()) {
+            try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    reservations.add(Reservation.fromCSV(line));
+                }
+            } catch (IOException e) {
+                System.err.println("Error loading reservations: " + e.getMessage());
+            }
+        }
     }
 }

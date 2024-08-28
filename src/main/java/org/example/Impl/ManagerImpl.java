@@ -1,34 +1,33 @@
 package org.example.Impl;
 
-import org.example.SqlConnection;
-import org.example.entity.Reservation;
 import org.example.entity.Room;
-import org.example.interfaces.*;
+import org.example.interfaces.ManagerInterface;
 
-import java.sql.*;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
 public class ManagerImpl implements ManagerInterface {
 
-    private final SqlConnection sqlConnection;
+    private static final String ROOMS_FILE_PATH = "rooms.csv";
+    private List<Room> rooms = new ArrayList<>();
     private int userId;
     private String fullName;
 
     public ManagerImpl(int userId, String fullName) {
         this.userId = userId;
         this.fullName = fullName;
-        this.sqlConnection = new SqlConnection();
+        loadRooms();
     }
 
     public void execute() {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Manager access is: ");
         while (true) {
-            System.out.println("1. view all rooms");
-            System.out.println("2. add a room");
-            System.out.println("3. delete a room");
+            System.out.println("1. View all rooms");
+            System.out.println("2. Add a room");
+            System.out.println("3. Delete a room");
             System.out.println("4. Exit");
             System.out.println("Choose an option: ");
 
@@ -40,16 +39,18 @@ public class ManagerImpl implements ManagerInterface {
                     getAllRooms();
                     break;
                 case 2:
-                    System.out.println("Enter the capacity of room: ");
+                    System.out.println("Enter the capacity of the room: ");
                     int capacity = scanner.nextInt();
-                    addRoom(String.valueOf(capacity));
+                    addRoom(capacity);
                     break;
                 case 3:
                     System.out.println("Enter the roomId you want to delete: ");
                     int delId = scanner.nextInt();
                     deleteRoom(delId);
+                    break;
                 case 4:
                     System.out.println("Exiting the system...");
+                    saveRooms();
                     scanner.close();
                     return;
                 default:
@@ -60,61 +61,64 @@ public class ManagerImpl implements ManagerInterface {
 
     @Override
     public List<Room> getAllRooms() {
-        String query = "SELECT * FROM rooms";
-        ResultSet rs = SqlConnection.retrieveQueryResults(query);
-
-        List<Room> rooms = new ArrayList<>();
-        try {
-            while (rs.next()) {
-                Room room = new Room();
-                room.setRoomId(rs.getInt("room_id"));
-                room.setRoom_capacity(Integer.parseInt(rs.getString("room_capacity")));
-                room.setIsEmpty(rs.getInt("isEmpty"));
-                rooms.add(room);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
         for (Room room : rooms) {
             System.out.println("Room ID: " + room.getRoomId() + ", Capacity: " + room.getRoom_capacity() + ", isEmpty: " + room.getIsEmpty());
         }
-
         return rooms;
     }
 
     @Override
-    public boolean addRoom(String roomCapacity) {
-        String query = String.format("INSERT INTO rooms (room_capacity) VALUES ('%s')", roomCapacity);
-
-        System.out.println("Executing query: " + query);
-        boolean isSuccess = sqlConnection.executeQuery(query);
-        return !isSuccess;
+    public boolean addRoom(int roomCapacity) {
+        int newRoomId = rooms.size() + 1;
+        Room newRoom = new Room(roomCapacity, newRoomId);
+        rooms.add(newRoom);
+        saveRooms();
+        System.out.println("Room added successfully.");
+        return true;
     }
-
 
     @Override
     public boolean deleteRoom(int roomId) {
-        String checkQuery = String.format("SELECT isEmpty FROM rooms WHERE room_id = %d", roomId);
-        ResultSet rs = sqlConnection.retrieveQueryResults(checkQuery);
-
-        try {
-            if (rs.next()) {
-                int isEmpty = rs.getInt("isEmpty");
-                if (isEmpty == 1) {
-                    String deleteQuery = String.format("DELETE FROM rooms WHERE room_id = %d", roomId);
-                    sqlConnection.executeQuery(deleteQuery);
-
-                    System.out.println("Room deleted successfully.");
-                } else {
-                    System.out.println("Room is not empty, cannot delete.");
-                    return false;
-                }
+        Room roomToDelete = null;
+        for (Room room : rooms) {
+            if (room.getRoomId() == roomId) {
+                roomToDelete = room;
+                break;
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
+        if (roomToDelete != null && roomToDelete.getIsEmpty() == 1) {
+            rooms.remove(roomToDelete);
+            saveRooms();
+            System.out.println("Room deleted successfully.");
+            return true;
+        } else {
+            System.out.println("Room is not empty or does not exist, cannot delete.");
+            return false;
+        }
+    }
 
-        return false;
+    private void saveRooms() {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(ROOMS_FILE_PATH))) {
+            for (Room room : rooms) {
+                writer.write(room.toCSV());
+                writer.newLine();
+            }
+        } catch (IOException e) {
+            System.err.println("Error saving rooms: " + e.getMessage());
+        }
+    }
+
+    private void loadRooms() {
+        File file = new File(ROOMS_FILE_PATH);
+        if (file.exists()) {
+            try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    rooms.add(Room.fromCSV(line));
+                }
+            } catch (IOException e) {
+                System.err.println("Error loading rooms: " + e.getMessage());
+            }
+        }
     }
 }

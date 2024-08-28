@@ -42,7 +42,7 @@ public class Main {
                 String password = scanner.nextLine();
 
                 auth.login(fullName, password);
-
+              
             } catch (Exception e) {
                 e.printStackTrace();
             }
