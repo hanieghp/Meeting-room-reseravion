@@ -1,28 +1,37 @@
 package org.example.Impl;
 
-import org.example.SqlConnection;
 import org.example.entity.Room;
-import org.example.entity.User;
+import org.example.entity.Reservation;
 import org.example.interfaces.UserInterface;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.io.*;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Scanner;
 
-public class UserImpl implements UserInterface{
+public class UserImpl implements UserInterface {
+    private static final String ROOMS_FILE_PATH = "rooms.csv";
+    private static final String RESERVATIONS_FILE_PATH = "reservations.csv";
+
     private int userId;
     private String fullName;
+
+    private static List<Room> rooms = new ArrayList<>();
+    private static List<Reservation> reservations = new ArrayList<>();
+
     public UserImpl(int userId, String fullName) {
         this.userId = userId;
         this.fullName = fullName;
+        loadRooms();
+        loadReservations();
     }
 
-    public void execute(){
+    public void execute() {
         Scanner scanner = new Scanner(System.in);
         while (true) {
-
             System.out.println("1. View Available Rooms");
             System.out.println("2. Send Reservation Request");
             System.out.println("3. Check Reservation Status");
@@ -31,9 +40,6 @@ public class UserImpl implements UserInterface{
 
             int choice = scanner.nextInt();
             scanner.nextLine();
-
-//            int choice = scanner.nextInt();
-//            scanner.nextLine();
 
             switch (choice) {
                 case 1:
@@ -47,10 +53,10 @@ public class UserImpl implements UserInterface{
                         }
                     }
                     break;
-              case 2:
+                case 2:
                     System.out.print("Enter the room ID you want to reserve: ");
                     int roomId = scanner.nextInt();
-                    scanner.nextLine(); // Consume newline
+                    scanner.nextLine();
                     System.out.print("Enter check-in date (YYYY-MM-DD): ");
                     String checkInDate = scanner.nextLine();
                     System.out.print("Enter check-out date (YYYY-MM-DD): ");
@@ -68,6 +74,7 @@ public class UserImpl implements UserInterface{
                     break;
                 case 4:
                     System.out.println("Exiting the system...");
+                    saveReservations();
                     scanner.close();
                     return;
                 default:
@@ -75,67 +82,93 @@ public class UserImpl implements UserInterface{
             }
         }
     }
+
     @Override
     public List<Room> viewAvailableRooms() {
         List<Room> availableRooms = new ArrayList<>();
-        String query = "SELECT room_id, room_capacity FROM rooms WHERE room_id NOT IN " +
-                "(SELECT room_id FROM reservation WHERE status = 'PENDING' OR status = 'ACCEPTED')";
-        try {
-            SqlConnection connection = new SqlConnection();
-            ResultSet rs = connection.retrieveQueryResults(query);
-            while (rs.next()) {
-                int roomId = rs.getInt("room_id");
-                int roomCapacity = rs.getInt("room_capacity");
-                availableRooms.add(new Room(roomCapacity, roomId));
+        for (Room room : rooms) {
+            boolean isReserved = false;
+            for (Reservation reservation : reservations) {
+                if (reservation.getRoomId() == room.getRoomId() &&
+                        (reservation.getStatus().equals("PENDING") || reservation.getStatus().equals("ACCEPTED"))) {
+                    isReserved = true;
+                    break;
+                }
             }
-        }catch (Exception e) {
-            e.printStackTrace();
+            if (!isReserved) {
+                availableRooms.add(room);
+            }
         }
-        System.out.println(availableRooms.size());
         return availableRooms;
     }
 
     @Override
     public String sendReservationRequest(int userId, int roomId, String checkInDate, String checkOutDate) {
-        String query = String.format(
-                "INSERT INTO reservation (user_id, room_id, check_in_date, check_out_date, status) VALUES ('%s', '%s', '%s', '%s', 'PENDING')",
-                userId, roomId, checkInDate, checkOutDate);
+        int reservationId = reservations.size() + 1;
+
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        Date checkIn;
+        Date checkOut;
         try {
-            SqlConnection connection = new SqlConnection();
-            connection.executeQuery(query);
-            ResultSet rs = connection.retrieveQueryResults("SELECT LAST_INSERT_ID() AS reservation_id");
-            int id = 0;
-
-            if (rs.next()) {
-                id = rs.getInt("reservation_id");
-                return "Reservation created successfully.";
-            }
-
-        }catch (Exception e) {
-            e.printStackTrace();
+            checkIn = sdf.parse(checkInDate);
+            checkOut = sdf.parse(checkOutDate);
+        } catch (ParseException e) {
+            return "Invalid date format.";
         }
 
-        return "Failed to create reservation.";
+        Reservation reservation = new Reservation(reservationId, userId, roomId, checkIn, checkOut, "PENDING");
+        reservations.add(reservation);
+        saveReservations();
+        return "Reservation created successfully.";
     }
+
 
     @Override
     public String checkReservationStatus(int roomId, int userId) {
-        String query = String.format(
-                "SELECT status FROM reservation WHERE room_id = '%d' AND user_id = '%d'", roomId, userId);
-        SqlConnection connection = new SqlConnection();
-        ResultSet rs = connection.retrieveQueryResults(query);
-        try {
-            if (rs.next()) {
-                return rs.getString("status");
-            } else {
-                return "Reservation not found.";
+        for (Reservation reservation : reservations) {
+            if (reservation.getRoomId() == roomId && reservation.getUserId() == userId) {
+                return reservation.getStatus();
             }
-        }catch (Exception e) {
-            e.printStackTrace();
         }
-
-        return "Failed to retrieve reservation status.";
+        return "Reservation not found.";
     }
 
+    private void saveReservations() {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(RESERVATIONS_FILE_PATH))) {
+            for (Reservation reservation : reservations) {
+                writer.write(reservation.toCSV());
+                writer.newLine();
+            }
+        } catch (IOException e) {
+            System.err.println("Error saving reservations: " + e.getMessage());
+        }
+    }
 
+    private void loadReservations() {
+        File file = new File(RESERVATIONS_FILE_PATH);
+        if (file.exists()) {
+            try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    reservations.add(Reservation.fromCSV(line));
+                }
+            } catch (IOException e) {
+                System.err.println("Error loading reservations: " + e.getMessage());
+            }
+        }
+    }
+
+    private void loadRooms() {
+        File file = new File(ROOMS_FILE_PATH);
+        if (file.exists()) {
+            try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    rooms.add(Room.fromCSV(line));
+                }
+            } catch (IOException e) {
+                System.err.println("Error loading rooms: " + e.getMessage());
+            }
+        }
+    }
 }

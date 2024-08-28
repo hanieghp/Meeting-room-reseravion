@@ -9,7 +9,7 @@ public interface ManagerInterface {
     List<Room> getAllRooms();
 
     // Method to add a new room to the database
-    boolean addRoom(int roomCapacity);
+    boolean addRoom(String roomCapacity);
 
     // Method to delete a room from the database
     boolean deleteRoom(int roomId);
