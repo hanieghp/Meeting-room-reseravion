@@ -9,6 +9,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Scanner;
 
 public class AdminImpl implements AdminInterface {
 
@@ -76,4 +77,41 @@ public class AdminImpl implements AdminInterface {
             }
         }
     }
+    public void execute(){
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Manager access is: ");
+        while (true) {
+            System.out.println("1. view all rooms reservation");
+            System.out.println("2. accept reservation");
+            System.out.println("3. decline reservation");
+            System.out.println("4. Exit");
+            System.out.println("Choose an option: ");
+
+            int choice = scanner.nextInt();
+            scanner.nextLine();
+
+            switch (choice) {
+                case 1:
+                    showRoomReservations();
+                    break;
+                case 2:
+                    System.out.println("Enter the Reservation id you want to Accept :");
+                    int reserveId = scanner.nextInt();
+                    acceptRoomReserve(reserveId);
+                    break;
+                case 3:
+                    System.out.println("Enter the Reservation id you want to Decline :");
+                    int reserveID = scanner.nextInt();
+                    declienRoomReserve(reserveID);
+                    break;
+                case 4:
+                    System.out.println("Exiting the system...");
+                    scanner.close();
+                    return;
+                default:
+                    System.out.println("Invalid option. Please try again.");
+            }
+        }
+    }
+
 }
